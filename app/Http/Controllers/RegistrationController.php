@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegistrationRequest;
+use App\Mail\Welcome;
 use Hash;
 use Illuminate\Http\Request;
 use App\User;
@@ -13,15 +15,10 @@ class RegistrationController extends Controller
         return view('registration.create');
    }
 
-   public function store()
+   public function store(RegistrationRequest $request)
    {
 
-       //Validar el formulario
-        $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password'=> 'required|confirmed'
-        ]);
+       //Validar el formulario en RegistrationRequest
 
 
 
@@ -29,23 +26,13 @@ class RegistrationController extends Controller
 
       // $user = User::create(request(['name', 'email', 'password']));
 
-       $user = User::create([
-
-           'name' => request('name'),
-
-           'email' => request('email'),
-
-           'password' => Hash::make(request('password'))
-
-       ]);
-
-       //Iniciar sesion
-
-
-       auth()->login($user);
-
-
        //Redireccionar a la pagina de inicio
+
+       $request->persist();
+
+
+
+       session()->flash('message', 'Thanks so mush for signing up!');
 
        return redirect()->home();
 

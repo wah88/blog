@@ -55,4 +55,16 @@ class Post extends Model
     }
 
 
+    public function tags()
+    {
+
+        // Any post my have many tags
+        // Any tag may be applied to many posts
+        //
+
+       return $this->belongsToMany(Tag::class);
+
+    }
+
+
 }
